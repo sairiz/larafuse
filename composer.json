@@ -1,0 +1,30 @@
+{
+    "name": "saiffil/larafuse",
+    "description": "Infusionsoft Database Manager for Laravel 4",
+    "keywords": ["laravel", "infusionsoft"],
+    "authors": [
+        {
+            "name": "Saiffil Fariz Mohamad Yusuff",
+            "email": "saiffil@mtouch.my"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*",
+        "saiffil/infusionsoft": "dev-master",
+        "liebig/cron": "dev-master"
+    },
+    "autoload": {
+        "classmap": [
+            "src/seeds",
+            "tests/TestCase.php"
+        ],
+        "psr-0": {
+            "Saiffil\\Larafuse\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    }
+}

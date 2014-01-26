@@ -1,0 +1,46 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class AddCustomColumnsToTables extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::table('Contact', function(Blueprint $table)
+		{
+		     $table->integer('_IdentityCard');
+		     $table->string('_Gender');
+		});
+
+		Schema::table('Job', function(Blueprint $table)
+		{
+		     $table->string('_TrackingNo');
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::table('Contact', function(Blueprint $table)
+		{
+		     $table->dropColumn('_IdentityCard');
+		     $table->dropColumn('_Gender');
+		});
+
+		Schema::table('Job', function(Blueprint $table)
+		{
+		     $table->dropColumn('_TrackingNo');
+		});
+	}
+
+}
