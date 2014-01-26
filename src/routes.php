@@ -59,7 +59,7 @@ Route::group(array('prefix' => 'larafuse'), function()
 {
     Route::get('/test', function()
     {
-        return Fuse::loadCon(17,['FirstName']);
+        return Fuse::dsQuery('Product',1,0,['Id' -> '%'],['Id','ProductName']);
     });
 
 	Route::get('fetch/{table?}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetch');
