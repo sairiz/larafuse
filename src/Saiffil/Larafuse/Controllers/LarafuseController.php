@@ -12,7 +12,7 @@ class LarafuseController extends BaseController {
 	/**
 	 * Larafus Repository
 	 *
-	 * @var Larafus
+	 * @var Larafuse
 	 */
 	protected $larafuse;
 
@@ -78,7 +78,7 @@ class LarafuseController extends BaseController {
 	}
 
 	/**
-	 * Fetch data from a single table accoring to given id
+	 * Sync data from a single table accoring to given id
 	 *
 	 * @return Response
 	 */
@@ -92,7 +92,7 @@ class LarafuseController extends BaseController {
 	}
 
     /**
-     * Fetch data from a single table accoring to given id
+     * Sync missing data
      * @param null $table
      * @return array|\Illuminate\View\View
      */
@@ -103,6 +103,34 @@ class LarafuseController extends BaseController {
 		return $data;
 
 		return View::make('larafuse::larafuse.sync', ['data' => $data,'table' => $table]);
+	}
+
+	 /**
+     * Sync Order Group data
+     * @param null $table
+     * @return array|\Illuminate\View\View
+     */
+    public function syncOrderGroup($limit = null)
+	{
+		$data = Sync::syncOrderGroup($limit);
+
+		return $data;
+
+		return View::make('larafuse::larafuse.sync', ['data' => $data]);
+	}
+
+	 /**
+     * Sync main data
+     * @param null $table
+     * @return array|\Illuminate\View\View
+     */
+    public function syncMain($limit = null)
+	{
+		$data = Sync::syncMain($limit);
+
+		return $data;
+
+		return View::make('larafuse::larafuse.sync', ['data' => $data]);
 	}
 
 	/**

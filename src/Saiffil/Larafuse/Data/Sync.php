@@ -36,13 +36,16 @@ class Sync extends BaseData {
      * Sync order group
      * @return array
      */
-    public function syncOrderGroup()
+    public function syncOrderGroup($limit = null)
     {
-            $tables = Config::get('larafuse::syncOrderGroup');
+        $tables = Config::get('larafuse::syncOrderGroup');
 
-            foreach ($tables as $table) {
-                $data[] = $this->syncer($table,Config::get('larafuse::syncOrderGroupLimit'));
-            }
+        if(!isset($limit))
+            $limit = Config::get('larafuse::syncOrderGroupLimit');
+
+        foreach ($tables as $table) {
+            $data[] = $this->syncer($table,$limit);
+        }
 
         return $data;
     }
@@ -51,12 +54,15 @@ class Sync extends BaseData {
      * Sync main group
      * @return array
      */
-    public function syncMain()
+    public function syncMain($limit = null)
     {
         $tables = Config::get('larafuse::syncMain');
 
+        if(!isset($limit))
+            $limit = Config::get('larafuse::syncMainLimit');
+
         foreach ($tables as $table) {
-            $data[] = $this->syncer($table,Config::get('larafuse::syncMainLimit'));
+            $data[] = $this->syncer($table,$limit);
         }
 
         return $data;
