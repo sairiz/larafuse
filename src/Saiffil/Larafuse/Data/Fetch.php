@@ -75,7 +75,16 @@ class Fetch extends BaseData {
         $inst::truncate();
 
         foreach ($retData as $data) {
-            $inst::create($data);
+            try 
+            {
+                $inst::create($data);   
+            } catch (Exception $e) {
+                if($table = 'DataFormField')
+                {
+                    $data['Values'] = json_encode($data['Values'], JSON_FORCE_OBJECT);
+                    $inst::create($data);
+                }
+            }       
         }
 
         return count($retData);
