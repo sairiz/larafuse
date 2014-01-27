@@ -225,7 +225,7 @@ class Sync extends BaseData {
         elseif(empty($retData))
             return 'Nothing to sync for table '.$table;
 
-        foreach ($retData as $key => $isi) {
+        foreach ($retData as $isi) {
             if (in_array($table,['StageMove','JobRecurringInstance']))
             {
                 if(!isset($marker) || $marker < $isi['DateCreated'])
@@ -235,7 +235,6 @@ class Sync extends BaseData {
                         $newInst->update($isi);
                     else $inst::create($isi);
                 }
-                else unset($retData[$key]);
             }
             elseif (in_array($table,['Contact','ContactAction','Invoice','InvoiceItem','InvoicePayment','Payment','Job','OrderItem']))
             {
@@ -246,7 +245,6 @@ class Sync extends BaseData {
                         $newInst->update($isi);
                     else $inst::create($isi);
                 }
-                else unset($retData[$key]);
             }
             else
             {
