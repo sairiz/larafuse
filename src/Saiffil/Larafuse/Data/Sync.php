@@ -247,6 +247,30 @@ class Sync extends BaseData {
                     else $inst::create($isi);
                 }
             }
+            elseif ($table === 'DataFormField')
+            {
+                $newInst = $inst::find($isi['Id']);
+                if(isset($newInst))
+                { 
+                    try 
+                    {
+                        $newInst->update($isi);   
+                    } catch (Exception $e) {
+                        $isi['Values'] = json_encode($isi['Values'], JSON_FORCE_OBJECT);
+                        $newInst->update($isi);
+                    }
+                }
+                else 
+                {
+                    try 
+                    {
+                        $newInst::create($isi);   
+                    } catch (Exception $e) {
+                        $isi['Values'] = json_encode($isi['Values'], JSON_FORCE_OBJECT);
+                        $newInst::create($isi);
+                    }
+                }
+            }
             else
             {
                 $newInst = $inst::find($isi['Id']);
