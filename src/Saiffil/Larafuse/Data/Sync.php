@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Fuse;
 use Config;
 use Exception;
+use Fetch;
 
 class Sync extends BaseData {
 
