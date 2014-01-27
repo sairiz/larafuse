@@ -16,7 +16,11 @@ class CreateContactGroupAssignsTable extends Migration {
 			$table->integer('GroupId');
 		});
 
-		$con = mysqli_connect("localhost","root","mysql","space");
+		$username = Config::get('database.connections.mysql.username');
+		$password = Config::get('database.connections.mysql.password');
+		$database = Config::get('database.connections.mysql.database');
+		
+		$con = mysqli_connect("localhost",$username,$password,$database);
 		$sql = "ALTER TABLE ContactGroupAssign
 				  ADD (	ContactGroup varchar(255),
 						DateCreated datetime,
