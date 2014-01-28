@@ -4,10 +4,6 @@ class Job extends BaseTable {
 
 	protected $table = 'Job';
 
-	protected $fillable = ['_TrackingNo','LastUpdated','ShipCountry','ShipZip','ShipState','ShipCity','ShipStreet2','ShipStreet1','ShipPhone',
-	'ShipCompany','ShipLastName','ShipMiddleName','ShipFirstName','OrderStatus','OrderType','JobRecurringId','DateCreated','JobStatus','ProductId',
-	'JobNotes','DueDate','StartDate','ContactId','JobTitle','Id'];
-
 	public function Contact()
     {
         return $this->belongsTo('Contact', 'ContactId', 'Id');

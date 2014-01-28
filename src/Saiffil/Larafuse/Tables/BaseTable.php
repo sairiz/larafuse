@@ -5,7 +5,7 @@ use Carbon\Carbon;
 
 abstract class BaseTable extends Eloquent {
 
-	protected $guarded = array();
+	protected static $unguarded = true;
 
 	protected $primaryKey = 'Id';
 
@@ -15,14 +15,7 @@ abstract class BaseTable extends Eloquent {
 
 	public function getDates()
 	{
-	    return ['Anniversary','Birthday','StartDate','EndDate','LastBillDate','NextBillDate','PaidThruDate','DateSet',
-	            'DateExpires','PayDate','DateDue','InitDate','DueDate','CloseDate','FolowUpDate','TargetCompletionDate','DateInStage',
-                'DateCreated','LastUpdated','DateAppraisalOrdered','DateAppraisalDone','DateAppraisalReceived','DateTitleOrdered',
-                'DateTitleReceived','DateRateLocked','DateRateLockExpires','CreditReportDate','ApplicationDate','ActualCloseDate',
-                'FundingDate','EstimatedCloseDate','NextActionDate','MoveDate','PrevStageMoveDate',
-                'Contact.Anniversary','Contact.CustomDate1','Contact.CustomDate2','Contact.CustomDate3','Contact.CustomDate4','Contact.CustomDate5','Contact.DateCreated',
-                'CreationDate','CompletionDate','ActionDate',
-                'EndDate','PopupDate','DateIncurred','StartDate','NextExpenseDate'];
+			return Larafuse::where('Type','LIKE','Date%')->rememberForever()->lists('Field');
 	}
 
 	public function setDateCreatedAttribute($value)
