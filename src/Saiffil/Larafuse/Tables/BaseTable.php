@@ -16,9 +16,66 @@ abstract class BaseTable extends Eloquent {
 
 	public function getDates()
 	{
-			return Larafuse::where('Type','LIKE','Date%')->rememberForever()->lists('Field');
+		$table = join('', array_slice(explode('\\', get_class($this)), -1));
+
+		return Larafuse::whereFusetable($table)->where('Type','LIKE','Date%')->rememberForever()->lists('Field');
 	}
 
+	public function getDateField()
+	{
+		$table = join('', array_slice(explode('\\', get_class($this)), -1));
+
+		return Larafuse::whereFusetable($table)->whereType('Date')->rememberForever()->lists('Field');
+	}
+
+	public function getDateTimeField()
+	{
+		$table = join('', array_slice(explode('\\', get_class($this)), -1));
+		
+		return Larafuse::whereFusetable($table)->whereType('DateTime')->rememberForever()->lists('Field');
+	}	
+
+	/**
+	 * Set a given attribute on the model.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return void
+	 */
+	public function setAttribute($key, $value)
+	{
+		// First we will check for the presence of a mutator for the set operation
+		// which simply lets the developers tweak the attribute as it is set on
+		// the model, such as "json_encoding" an listing of data for storage.
+		if ($this->hasSetMutator($key))
+		{
+			$method = 'set'.studly_case($key).'Attribute';
+
+			return $this->{$method}($value);
+		}
+
+		// If an attribute is listed as a "date", we'll convert it from a DateTime
+		// instance into a form proper for storage on the database tables using
+		// the connection grammar's date format. We will auto set the values.
+		elseif (in_array($key, $this->getDates()))
+		{
+			if ($value)
+			{
+				if(in_array($key, $this->getDateField()))
+				{
+					$value = (new Carbon($value))->toDateString();
+				}
+				elseif(in_array($key, $this->getDateTimeField()))
+				{
+					$value = (new Carbon($value))->toDateTimeString();
+				}
+			}
+		}
+
+		$this->attributes[$key] = $value;
+	}
+
+/*
 	public function setDateCreatedAttribute($value)
 	{ 
 	        $this->attributes['DateCreated'] = (new Carbon($value))->toDateTimeString();
@@ -252,7 +309,7 @@ abstract class BaseTable extends Eloquent {
 	public function setDateInStageAttribute($value)
 	{ 
 	        $this->attributes['DateInStage'] = (new Carbon($value))->toDateString();
-	}
+	} */
 }
 
 /*

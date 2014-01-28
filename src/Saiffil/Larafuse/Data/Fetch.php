@@ -79,7 +79,7 @@ class Fetch extends BaseData {
             {
                 $inst::create($data);   
             } catch (Exception $e) {
-                if($table = 'DataFormField')
+                if($table === 'DataFormField')
                 {
                     $data['Values'] = json_encode($data['Values'], JSON_FORCE_OBJECT);
                     $inst::create($data);
