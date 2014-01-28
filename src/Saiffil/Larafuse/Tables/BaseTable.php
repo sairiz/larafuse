@@ -2,6 +2,7 @@
 
 use Eloquent;
 use Carbon\Carbon;
+use Larafuse;
 
 abstract class BaseTable extends Eloquent {
 
