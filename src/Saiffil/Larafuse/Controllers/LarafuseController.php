@@ -6,6 +6,8 @@ use Sync;
 use View;
 use Redirect;
 use Input;
+use Cache;
+use Config;
 
 class LarafuseController extends BaseController {
 
@@ -41,11 +43,60 @@ class LarafuseController extends BaseController {
 	 */
 	public function fetch($table = null)
 	{
+		if($table === null)
+		{
+			if(Cache::has('tables'))
+			{
+
+			} 
+			else 
+			{
+				$tables = Fetch::getTables();
+				Cache::put('tables',$tables,5000);
+			}
+
+			$newTable = Cache::get('tables');			
+
+			$n = count($newTable);
+
+			if (Cache::has('fetch'))
+			{
+				$i = Cache::get('fetch');
+			    $i = $i + 1;
+			}
+			else 
+			{
+				$i = 0;
+
+				Cache::put('fetch',$i,100);
+			}
+
+			if($i === ($n-1))
+			{
+				$done = true;
+				Cache::forget('fetch');
+				Cache::forget('tables');
+			}
+			else 
+			{
+				$data = Fetch::fetch(ucfirst($newTable[$i]));
+				$done = false;
+				$tab = $newTable[$i];
+				Cache::put('fetch',$i,100);
+			}
+		} 
+		else
+		{
+			$data = Fetch::fetch(ucfirst($table));
+		}
+
+		return View::make('larafuse::larafuse.fetch', compact('data','tab','done'));
+		/*
 		$data = Fetch::fetch($table);
 
 		return $data;
 
-		return View::make('larafuse::larafuse.fetch', ['data' => $data,'table' => $table]);
+		return View::make('larafuse::larafuse.fetch', ['data' => $data,'table' => $table]); */
 	}
 
 	/**

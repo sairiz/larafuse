@@ -16,6 +16,11 @@ class Fetch extends BaseData {
     {
         set_time_limit(0);
 
+        $data = $this->fetcher(ucfirst($table));
+
+        return $data;
+        /*
+
         if ($table === null) {
 
             $ignore = Config::get('larafuse::fetchIgnore');
@@ -29,7 +34,7 @@ class Fetch extends BaseData {
         } else
             $data = $this->fetcher(ucfirst($table));
 
-        return $data;
+        return $data; */
     }
 
 
