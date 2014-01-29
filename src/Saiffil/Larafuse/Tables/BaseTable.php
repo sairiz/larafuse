@@ -25,14 +25,14 @@ abstract class BaseTable extends Eloquent {
 	{
 		$table = join('', array_slice(explode('\\', get_class($this)), -1));
 
-		return Larafuse::whereFusetable($table)->whereType('Date')->rememberForever()->lists('Field');
+		return Larafuse::whereFusetable($table)->whereType('Date')->rememberForever('DateField')->lists('Field');
 	}
 
 	public function getDateTimeField()
 	{
 		$table = join('', array_slice(explode('\\', get_class($this)), -1));
 		
-		return Larafuse::whereFusetable($table)->whereType('DateTime')->rememberForever()->lists('Field');
+		return Larafuse::whereFusetable($table)->whereType('DateTime')->rememberForever('DateTimeField')->lists('Field');
 	}	
 
 	/**
@@ -57,11 +57,11 @@ abstract class BaseTable extends Eloquent {
 		// If an attribute is listed as a "date", we'll convert it from a DateTime
 		// instance into a form proper for storage on the database tables using
 		// the connection grammar's date format. We will auto set the values.
-		elseif (in_array($key, $this->getDates()))
-		{
-			if ($value)
-			{
-				if(in_array($key, $this->getDateField()))
+		//elseif (in_array($key, $this->getDates()))
+		//{
+			//if ($value)
+			//{
+				elseif(in_array($key, $this->getDateField()))
 				{
 					$value = (new Carbon($value))->toDateString();
 				}
@@ -69,8 +69,8 @@ abstract class BaseTable extends Eloquent {
 				{
 					$value = (new Carbon($value))->toDateTimeString();
 				}
-			}
-		}
+			//}
+		//}
 
 		$this->attributes[$key] = $value;
 	}
