@@ -88,6 +88,7 @@ class LarafuseController extends BaseController {
 		else
 		{
 			$data = Fetch::fetch(ucfirst($table));
+			$done = true;
 		}
 
 		return View::make('larafuse::larafuse.fetch', compact('data','tab','done'));

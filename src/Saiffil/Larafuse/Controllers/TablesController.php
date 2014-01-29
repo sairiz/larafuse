@@ -94,7 +94,9 @@ class TablesController extends BaseController {
 
 		$inst = $tableObject->findOrFail($Id);
 
-		return View::make('larafuse::table.show', compact('inst','table','Id'));
+		$larafuse = $this->larafuse->whereFusetable($table)->lists('Field');
+
+		return View::make('larafuse::table.show', compact('inst','table','Id','larafuse'));
 	}
 
 	/**
