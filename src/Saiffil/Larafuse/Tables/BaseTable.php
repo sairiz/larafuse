@@ -16,23 +16,23 @@ abstract class BaseTable extends Eloquent {
 
 	public function getDates()
 	{
-		$table = join('', array_slice(explode('\\', get_class($this)), -1));
+		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
 
-		return Larafuse::whereFusetable($table)->where('Type','LIKE','Date%')->rememberForever()->lists('Field');
+		return Larafuse::where('Type','LIKE','Date%')->rememberForever()->lists('Field');
 	}
 
 	public function getDateField()
 	{
-		$table = join('', array_slice(explode('\\', get_class($this)), -1));
+		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
 
-		return Larafuse::whereFusetable($table)->whereType('Date')->rememberForever('DateField')->lists('Field');
+		return Larafuse::whereType('Date')->rememberForever('DateField')->lists('Field');
 	}
 
 	public function getDateTimeField()
 	{
-		$table = join('', array_slice(explode('\\', get_class($this)), -1));
+		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
 		
-		return Larafuse::whereFusetable($table)->whereType('DateTime')->rememberForever('DateTimeField')->lists('Field');
+		return Larafuse::whereType('DateTime')->rememberForever('DateTimeField')->lists('Field');
 	}	
 
 	/**
