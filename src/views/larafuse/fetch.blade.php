@@ -1,6 +1,13 @@
 <html>
 <head>
-	<meta http-equiv="refresh" content="{{ '5' }}; url=/larafuse/fetch" />
+<?php
+	if($done)
+	{
+
+	} else {
+		?><meta http-equiv="refresh" content="{{ '5' }}; url=/larafuse/fetch" />
+<?php	}
+?>
 </head>
 
 <body>
