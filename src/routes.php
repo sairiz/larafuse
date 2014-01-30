@@ -62,9 +62,16 @@ Route::group(array('prefix' => 'larafuse'), function()
         return Fuse::dsQuery('Product',1,0,['Id' => '%'],['Id','ProductName']);
     });
 
+	Route::get('fetch/rowcount', function()
+	{
+		return Fetch::getRowCount();
+	});
+
 	Route::get('fetch/{table?}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetch');
 
 	Route::get('fetchid/{table}/{Id}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetchId');
+
+	Route::get('fetchtable/{table}/{page}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetchTable');
 
 	Route::get('syncmissing/{table?}', 'Saiffil\Larafuse\Controllers\LarafuseController@syncMissing');
 
