@@ -35,6 +35,23 @@ class LarafuseController extends BaseController {
 		return View::make('larafuse::larafuse.index', compact('larafuse'));
 	}
 
+		/**
+	 * Fetch all data according to table. If no table define
+	 * all defined table will be fetched
+	 *
+	 * @return Response
+	 */
+	public function fetchTable($table, $page = null)
+	{
+		$incData = Fetch::fetchTable($table,$page);
+
+		$data = $incData[0];
+
+		$nextPage = $incData[1];
+
+		return View::make('larafuse::larafuse.fetchtable', compact('table','data','nextPage'));
+	}
+
 	/**
 	 * Fetch all data according to table. If no table define
 	 * all defined table will be fetched

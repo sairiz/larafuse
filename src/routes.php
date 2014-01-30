@@ -71,7 +71,7 @@ Route::group(array('prefix' => 'larafuse'), function()
 
 	Route::get('fetchid/{table}/{Id}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetchId');
 
-	Route::get('fetchtable/{table}/{page}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetchTable');
+	Route::get('fetchtable/{table}/{page?}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetchTable');
 
 	Route::get('syncmissing/{table?}', 'Saiffil\Larafuse\Controllers\LarafuseController@syncMissing');
 

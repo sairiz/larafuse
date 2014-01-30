@@ -12,6 +12,29 @@ class Fetch extends BaseData {
      * @param null $table
      * @return array
      */
+    public function fetchTable($table, $page = null)
+    {
+        set_time_limit(0);
+
+        if($page === null)
+            $page = 0;
+
+        $totalPage = $this->pageCount($table);
+
+        if($page < $totalPage)
+            $nextPage = $page + 1;
+        else $nextPage = null;
+
+        $data = $this->fetcher(ucfirst($table),$page);
+
+        return [$data,$nextPage];
+    }
+
+    /**
+     * Main fetch method
+     * @param null $table
+     * @return array
+     */
     public function fetch($table = null)
     {
         set_time_limit(0);
@@ -66,9 +89,9 @@ class Fetch extends BaseData {
      * @param $table
      * @return array|int
      */
-    private function fetcher($table)
+    private function fetcher($table,$page = null)
     {
-        $retData = $this->query($table);
+        $retData = $this->query($table,$page);
 
         if(!is_array($retData))
             return $retData;
@@ -100,23 +123,14 @@ class Fetch extends BaseData {
      * @param $table
      * @return array
      */
-    private function query($table)
+    private function query($table,$page)
     {
-        $pageCount = $this->pageCount($table);
+        if($page === null)
+            $page = 0;
 
         $retFields = $this->returnFields($table);
 
-        $retData = [];
-
-        for($i = 0; $i <= $pageCount; $i++)
-        {
-            $data = Fuse::dsQueryOrderBy($table,1000,$i,['Id' => '%'],$retFields,'Id');
-            try {
-                $retData = array_merge($retData, $data);
-            } catch (Exception $e) {
-                return $data;
-            }
-        }
+        $retData = Fuse::dsQueryOrderBy($table,1000,$page,['Id' => '%'],$retFields,'Id');
 
         return $retData;
     }
