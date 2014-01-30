@@ -41,15 +41,21 @@ class LarafuseController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function fetchTable($table, $page = null)
+	public function fetchTable($table, $page = null, $continue = false)
 	{
-		$incData = Fetch::fetchTable($table,$page);
+		$incData = Fetch::fetchTable($table,$page,$continue);
 
-		$data = $incData[0];
+		$table = $incData[0];
 
-		$nextPage = $incData[1];
+		$data = $incData[1];
 
-		return View::make('larafuse::larafuse.fetchtable', compact('table','data','nextPage'));
+		$nextPage = $incData[2];
+
+		$nextTable = $incData[3];
+
+		$continue = $incData[4];
+
+		return View::make('larafuse::larafuse.fetchtable', compact('table','data','nextPage','nextTable','continue'));
 	}
 
 	/**

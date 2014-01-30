@@ -4,6 +4,7 @@ use Config;
 use Symfony\Component\DomCrawler\Crawler;
 use Fuse;
 use Exception;
+use Cache;
 
 class Fetch extends BaseData {
 
@@ -12,22 +13,58 @@ class Fetch extends BaseData {
      * @param null $table
      * @return array
      */
-    public function fetchTable($table, $page = null)
+    public function fetchTable($table, $page = null, $continue = false)
     {
         set_time_limit(0);
 
         if($page === null)
             $page = 0;
 
+        if($table == 'all')
+        {
+            $tables = $this->getTables();
+
+            Cache::put('tableid',0,90);
+
+            $table = $tables[0];
+
+            $continue = true;
+        }
+
         $totalPage = $this->pageCount($table);
 
         if($page < $totalPage)
+        {
             $nextPage = $page + 1;
-        else $nextPage = null;
+            $nextTable = null;
+        }
+        else 
+        {
+            $nextPage = null;
+
+            if($continue)
+            {
+                $tableId = Cache::get('tableid') + 1;
+                if($tableId < 58)
+                {
+                    $tables = $this->getTables();
+                    $nextTable = $tables[$tableId];
+                    Cache::put('tableid',$tableId,90);
+                } 
+                else {
+                    $nextTable = 'done';
+                    Cache::forget('tableid');
+                }
+            } 
+            else {
+                $nextTable = 'done';
+                Cache::forget('tableid');
+            }
+        }
 
         $data = $this->fetcher(ucfirst($table),$page);
 
-        return [$data,$nextPage];
+        return [$table,$data,$nextPage,$nextTable,$continue];
     }
 
     /**
@@ -39,25 +76,16 @@ class Fetch extends BaseData {
     {
         set_time_limit(0);
 
-        $data = $this->fetcher(ucfirst($table));
+        if($table)
+        {
+            $data = $this->fetchTable(ucfirst($table));
 
-        return $data;
-        /*
-
-        if ($table === null) {
-
-            $ignore = Config::get('larafuse::fetchIgnore');
-
-            $tables = array_diff($this->getTables(), $ignore);
-
-            foreach ($tables as $iTable) {
-                $data[$iTable] = $this->fetcher(ucfirst($iTable));
-            }
-
-        } else
-            $data = $this->fetcher(ucfirst($table));
-
-        return $data; */
+            return $data;
+        }
+        else
+        {
+            $this->fetchTable('all');
+        }
     }
 
 
@@ -100,7 +128,8 @@ class Fetch extends BaseData {
 
         $inst = $this->createInstance($table);
 
-        $inst::truncate();
+        if($page === 0 || $page === null)
+            $inst::truncate();
 
         foreach ($retData as $data) {
             try 
