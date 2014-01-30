@@ -5,6 +5,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Fuse;
 use Exception;
 use Cache;
+use Saiffil\Larafuse\Helpers\Log;
 
 class Fetch extends BaseData {
 
@@ -134,14 +135,15 @@ class Fetch extends BaseData {
         foreach ($retData as $data) {
             try 
             {
-                $inst::create($data);   
+                $inst::create($data);
             } catch (Exception $e) {
                 if($table === 'DataFormField')
                 {
                     $data['Values'] = json_encode($data['Values'], JSON_FORCE_OBJECT);
                     $inst::create($data);
                 }
-            }       
+                Log::fetchException($table,$data,$e->getMessage());
+            }
         }
 
         return count($retData);

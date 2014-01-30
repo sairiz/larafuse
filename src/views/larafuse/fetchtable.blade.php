@@ -1,6 +1,6 @@
 <?php 
 if($table === 'Contact' || $table === 'Job')
-	$masa = 20;
+	$masa = 25;
 else $masa = 15;
 ?>
 
