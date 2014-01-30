@@ -331,7 +331,7 @@ class Fetch extends BaseData {
                     $table = 'Contact';
                     break;
                 case -3:
-                    $table = 'Referral';
+                    $table = 'Affiliate';
                     break;
                 case -6:
                     $table = 'Company';
