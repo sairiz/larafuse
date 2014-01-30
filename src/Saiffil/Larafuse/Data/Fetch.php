@@ -45,7 +45,7 @@ class Fetch extends BaseData {
             if($continue)
             {
                 $tableId = Cache::get('tableid') + 1;
-                if($tableId < 58)
+                if($tableId < 57)
                 {
                     $tables = $this->getTables();
                     $nextTable = $tables[$tableId];

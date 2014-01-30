@@ -1,11 +1,17 @@
+<?php 
+if($table === 'Contact' || $table === 'Job')
+	$masa = 20;
+else $masa = 15;
+?>
+
 <html>
 <head>
 <?php 
 	if($nextPage != null) { ?>
-		<meta http-equiv="refresh" content="{{ '15' }}; url=/larafuse/fetchtable/{{ $table }}/{{ $nextPage }}/{{ $continue }}" />
+		<meta http-equiv="refresh" content="{{ $masa }}; url=/larafuse/fetchtable/{{ $table }}/{{ $nextPage }}/{{ $continue }}" />
 <?php }
 
-	if($nextTable != null) { ?>
+	if($nextTable != null && $nextTable != 'done') { ?>
 		<meta http-equiv="refresh" content="{{ '10' }}; url=/larafuse/fetchtable/{{ $nextTable }}/0/{{ $continue }}" />
 <?php } ?>
 </head>
