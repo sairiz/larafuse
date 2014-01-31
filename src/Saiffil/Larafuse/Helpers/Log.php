@@ -2,7 +2,7 @@
 
 class Log {
 	
-	public static function fetchException($table, $data, $exception = null)
+	public static function fetchException($table, $data, $exception)
 	{
 		$file = storage_path().'/logs/'.$table.'fetchexception.log';
 

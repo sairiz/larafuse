@@ -327,4 +327,13 @@ class Sync extends BaseData {
 
         return $retData;
     }
+
+
+    public function syncField()
+    {
+        $fields = \Larafuse::where('Field','LIKE','\_%')->get(['Fusetable','Field']);
+
+
+        return $fields;
+    }
 }
