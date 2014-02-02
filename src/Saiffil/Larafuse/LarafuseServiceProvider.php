@@ -41,7 +41,7 @@ class LarafuseServiceProvider extends ServiceProvider {
 
 		$this->app['sync'] = $this->app->share(function()
 		{
-			return new Sync;
+			return new Sync(new Fetch);
 		});
 
 		$this->app['larafuse'] = $this->app->share(function()
