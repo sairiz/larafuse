@@ -1,9 +1,17 @@
 <?php
 
-use Saiffil\Larafuse\Data\Fetch;
+//use Saiffil\Larafuse\Data\Fetch;
 
-class FetchTest extends TestCase {
+class SyncTest extends TestCase {
 
+	public function testCheckFieldStatusReturnBoolean()
+	{
+		$data = Sync::checkFieldStatus('Contact');
+
+		$this->assertInternalType('bool',$data);
+	}
+
+/*
 	public function testGetTablesReturnArray()
 	{
 		$data = Fetch::getTables();

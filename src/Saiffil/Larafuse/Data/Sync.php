@@ -5,9 +5,41 @@ use Carbon\Carbon;
 use Fuse;
 use Config;
 use Exception;
-use Fetch;
+use Larafuse;
+use Schema;
+use Illuminate\Database\Schema\Blueprint;
+use DB;
 
 class Sync extends BaseData {
+
+    protected $fetch;
+
+    protected $fuseId;
+
+    protected $localId;
+
+    protected $inst;
+
+    protected $destroy;
+
+    protected $create;
+
+    protected $liveField;
+
+    protected $localField;
+
+    protected $drop;
+
+    protected $add;
+
+    protected $customFields;
+
+    public function __construct(Fetch $fetch)
+    {
+        parent::__construct();
+
+        $this->fetch = $fetch;
+    }
 
     /**
      * Main sync function
@@ -21,7 +53,7 @@ class Sync extends BaseData {
 
             $ignore = Config::get('larafuse::syncIgnore');
 
-            $tables = array_diff(Fetch::getTables(), $ignore);
+            $tables = array_diff($this->fetch->getTables(), $ignore);
 
             foreach ($tables as $iTable) {
                 $data[] = $this->syncer(ucfirst($iTable));
@@ -80,7 +112,7 @@ class Sync extends BaseData {
 
             $ignore = Config::get('larafuse::syncMissingIgnore');
 
-            $tables = array_diff(Fetch::getTables(), $ignore);
+            $tables = array_diff($this->fetch->getTables(), $ignore);
 
             foreach ($tables as $table) {
                 $data[] = $this->syncMissingId(ucfirst($table));
@@ -95,80 +127,83 @@ class Sync extends BaseData {
     /**
      * Sync deleted id
      * @param $table
-     * @return array
+     * @return int
      */
     public function syncMissingId($table)
     {
-        $missId = $this->checkMissingId($table);
-
-        if($missId[0] === 0)
-            return 0;
-
-        $inst = $this->createInstance($table);
-
-        if($missId[0] === 1) {
-            $inst::destroy($missId[1]);
-        }
-        elseif($missId[0] === -1) {
-            foreach ($missId[1] as $diff) {
-                Fetch::fetchId($table,$diff);
+        if($this->checkMissingId($table))
+        {
+            if($this->destroy)
+            {
+                $this->inst->destroy($this->destroy);
             }
-        }
 
-        return $missId[1];
+            if($this->create)
+            {
+                foreach($this->create as $data)
+                {
+                    $this->fetch->fetchId($table,$data);
+                }
+
+            }
+
+            return 1;
+        }
+        else 
+        {
+            return 0;
+        }
     }
 
     /**
      * Check missing id
      * @param $table
-     * @return array [status code, missing id]
+     * @return boolean
      */
     public function checkMissingId($table)
     {
-        $status = $this->checkDataStatus($table);
+        if($this->checkDataStatus($table))
+        {
+            $this->destroy = array_diff($this->localId,$this->fuseId);
 
-        if($status[0] === 0)
-            return [0];
+            $this->create = array_diff($this->fuseId,$this->localId);
 
-        for($i = 0; $i <= $status[1]; $i++) {
-            $retData = Fuse::dsQueryOrderBy($table,1000,$i,['Id' => '%'],['Id'],'Id');
-            foreach($retData as $data)
-                $fuseId[] = $data['Id'];
+            return true;
         }
-
-        $inst = $this->createInstance($table);
-
-        $localId = $inst::all()->lists('Id');
-
-        if($status[0] === 1)
-            $diff = array_diff($localId,$fuseId);
-        elseif($status[0] === -1)
-            $diff = array_diff($fuseId,$localId);
-
-        return [$status[0],$diff];
+        else
+        {
+            return false;
+        }
     }
 
     /**
      * Check data status
      * @param $table
-     * @return array [status code, page count]
+     * @return boolean
      */
     public function checkDataStatus($table)
     {
-        $inst = $this->createInstance($table);
-
-        $local = $inst::all()->count();
-
         $live = Fuse::dsCount($table,['Id' => '%']);
 
         $page = (int)($live/1000);
 
-        if($local === $live)
-            return [0];
-        elseif($local > $live)
-            return [1,$page];
+        for($i = 0; $i <= $page; $i++) {
+            $retData = Fuse::dsQueryOrderBy($table,1000,$i,['Id' => '%'],['Id'],'Id');
+            foreach($retData as $data)
+                $this->fuseId[] = $data['Id'];
+        }
 
-        return [-1,$page];
+        $this->inst = $this->createInstance($table);
+
+        $this->localId = $this->inst->all()->lists('Id');
+
+        sort( $this->fuseId ); 
+        sort( $this->localId ); 
+
+        if($this->fuseId == $this->localId)
+            return false;
+
+        return true; 
     }
 
     /**
@@ -328,12 +363,123 @@ class Sync extends BaseData {
         return $retData;
     }
 
-
-    public function syncField()
+    /**
+     * Main sync missing function
+     * @param null $table
+     * @return array
+     */
+    public function syncField($table = null)
     {
-        $fields = \Larafuse::where('Field','LIKE','\_%')->get(['Fusetable','Field']);
+        if ($table === null) {
 
+            $tables = ['Contact','Job','Affiliate','ContactAction','Lead','Company'];
 
-        return $fields;
+            foreach ($tables as $table) {
+                $data[] = $this->syncMissingField(ucfirst($table));
+            }
+
+        } else
+            $data = $this->syncMissingField(ucfirst($table));
+
+        DB::table('Larafuse')->truncate();
+
+        $columns = $this->fetch->getColumnsWithCustom();
+
+        foreach($columns as $column) {
+            Larafuse::create($column);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Sync missing field
+     * @param $table
+     * @return array
+     */
+    public function syncMissingField($tableDatabase)
+    {
+        if($this->checkMissingField($tableDatabase))
+        {
+            if($this->drop)
+            {
+                Schema::table($tableDatabase, function(Blueprint $table)
+                {
+                    $table->dropColumn($this->drop);
+                });
+            }
+
+            if($this->add)
+            {
+                Schema::table($tableDatabase, function(Blueprint $table)
+                {
+                    foreach($this->add as $data)
+                    {
+                        foreach($this->customFields as $tmp)
+                        {
+                            if($tmp['field'] == $data)
+                                $type = lcfirst($tmp['type']);
+                        }
+                        $table->$type($data);
+                    }
+                });
+            }
+
+            return 1;
+        }
+        else 
+        {
+            return 0;
+        }
+    }
+
+    /**
+     * Check missing field
+     * @param $table
+     * @return boolean
+     */
+    public function checkMissingField($table)
+    {
+        if($this->checkFieldStatus($table))
+        {
+            $this->drop = array_diff($this->localField,$this->liveField);
+
+            $this->add = array_diff($this->liveField,$this->localField);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Check field status
+     * @param $table
+     * @return boolean
+     */
+    public function checkFieldStatus($table)
+    {
+        $this->customFields = $this->fetch->getCustomColumns($table);
+
+        $columns = [];
+
+        foreach($this->customFields as $tmp)
+        {
+            $columns[] = $tmp['field']; 
+        }
+        
+        $this->liveField = $columns;
+
+        $this->localField = Larafuse::whereFusetable($table)->where('Field','LIKE','\_%')->lists('Field');
+
+        sort( $this->liveField );
+        sort( $this->localField );
+
+        if($this->liveField == $this->localField)
+            return false;
+
+        return true; 
     }
 }

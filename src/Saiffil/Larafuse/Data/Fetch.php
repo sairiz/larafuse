@@ -318,7 +318,7 @@ class Fetch extends BaseData {
      *
      * @return array
      */
-    public function getCustomColumns()
+    public function getCustomColumns($table = null)
     {
         $retFields = ['Name','FormId','DataType','Label'];
         $retData = Fuse::dsQuery("DataFormField",1000,0,['Id' => '%'],$retFields);
@@ -326,112 +326,31 @@ class Fetch extends BaseData {
         $i = 0;
 
         foreach ($retData as $data) {
-            switch ($data['FormId']) {
-                case -1:
-                    $table = 'Contact';
-                    break;
-                case -3:
-                    $table = 'Affiliate';
-                    break;
-                case -4:
-                    $table = 'Lead';
-                    break;    
-                case -5:
-                    $table = 'ContactAction';
-                    break;    
-                case -6:
-                    $table = 'Company';
-                    break;
-                case -9:
-                    $table = 'Job';
-                    break;
-                default:
-                    $table = false;
-                    break;
-            }
 
-            switch ($data['DataType']) {
-                case 1:
-                    $datatype = 'String';
-                    break;
-                case 2:
-                    $datatype = 'String';
-                    break;
-                case 3:
-                    $datatype = 'Double';
-                    break;
-                case 4:
-                    $datatype = 'Double';
-                    break;
-                case 5:
-                    $datatype = 'String';
-                    break;
-                case 6:
-                    $datatype = 'Double';
-                    break;
-                case 7:
-                    $datatype = 'String';
-                    break;
-                case 8:
-                    $datatype = 'String';
-                    break;
-                case 9:
-                    $datatype = 'Double';
-                    break;
-                case 10:
-                    $datatype = 'String';
-                    break;
-                case 11:
-                    $datatype = 'Double';
-                    break;
-                case 12:
-                    $datatype = 'Integer';
-                    break;
-                case 13:
-                    $datatype = 'Date';
-                    break;
-                case 14:
-                    $datatype = 'DateTime';
-                    break;
-                case 15:
-                    $datatype = 'String';
-                    break;
-                case 16:
-                    $datatype = 'String';
-                    break;
-                case 17:
-                    $datatype = 'String';
-                    break;
-                case 18:
-                    $datatype = 'String';
-                    break;
-                case 19:
-                    $datatype = 'Double';
-                case 20:
-                    $datatype = 'String';
-                    break;
-                case 21:
-                    $datatype = 'String';
-                    break;
-                case 22:
-                    $datatype = 'String';
-                    break;
-                case 23:
-                    $datatype = 'String';
-                    break;
-                default:
-                    $datatype = 'String';
-                    break;
-            }
+            $tableDatabase = $this->getFormIdTable($data['FormId']);
 
-            if ($table) {
-                $fields[$i]['fusetable'] = $table;
+            $dataType = $this->getFormIdDataType($data['DataType']);
+
+            if ($tableDatabase) {
+                $fields[$i]['fusetable'] = $tableDatabase;
                 $fields[$i]['field'] = '_'.$data['Name'];
-                $fields[$i]['type'] = $datatype;
+                $fields[$i]['type'] = $dataType;
                 $fields[$i]['access'] = 'Edit Delete Add Read';
                 $fields[$i]['label'] = $data['Label'];
                 $i++;
             }
+        }
+
+        $columns = [];
+
+        if($table)
+        {
+            foreach ($fields as $field) {
+                if($field['fusetable'] === $table)
+                    $columns[] = $field;
+            }
+
+            return $columns;
         }
 
         foreach ($fields as $field) {

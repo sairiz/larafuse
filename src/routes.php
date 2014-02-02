@@ -75,6 +75,11 @@ Route::group(array('prefix' => 'larafuse'), function()
 
 	Route::get('syncmissing/{table?}', 'Saiffil\Larafuse\Controllers\LarafuseController@syncMissing');
 
+	Route::get('syncfield/{table?}', function($table = null)
+	{
+		return Sync::syncField($table);
+	});
+
 	Route::get('syncordergroup', 'Saiffil\Larafuse\Controllers\LarafuseController@syncOrderGroup');
 
     Route::get('syncmain', 'Saiffil\Larafuse\Controllers\LarafuseController@syncMain');
