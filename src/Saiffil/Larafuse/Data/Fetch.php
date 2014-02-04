@@ -6,6 +6,7 @@ use Fuse;
 use Exception;
 use Cache;
 use Saiffil\Larafuse\Helpers\Log;
+use DB;
 
 class Fetch extends BaseData {
 
@@ -129,8 +130,8 @@ class Fetch extends BaseData {
 
         $inst = $this->createInstance($table);
 
-        if($page === 0 || $page === null)
-            $inst::truncate();
+        if($page == 0 || $page == null)
+            DB::table($table)->truncate();
 
         foreach ($retData as $data) {
             try 
@@ -139,10 +140,11 @@ class Fetch extends BaseData {
             } catch (Exception $e) {
                 if($table === 'DataFormField')
                 {
+                    Log::fetchException($table,$data,$e->getMessage());
                     $data['Values'] = json_encode($data['Values'], JSON_FORCE_OBJECT);
                     $inst::create($data);
-                }
-                Log::fetchException($table,$data,$e->getMessage());
+                } else
+                    Log::fetchException($table,$data,$e->getMessage());
             }
         }
 
