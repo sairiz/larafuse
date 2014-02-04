@@ -197,7 +197,11 @@ class Fetch extends BaseData {
     {
         $crawler = new Crawler(file_get_contents( __DIR__ . '/../Docs/index.html'));
 
-        return $crawler->filter('a')->extract(['_text']);
+        $tables = $crawler->filter('a')->extract(['_text']);
+
+        sort($tables);
+
+        return $tables;
     }
 
     /**
