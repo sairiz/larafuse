@@ -1,108 +1,71 @@
 <?php namespace Saiffil\Larafuse\Tables;
 
-class Contact extends BaseTable {
+use Zizaco\Confide\ConfideUser;
+
+class Contact extends ConfideUser {
 
 	protected $table = 'Contact';
 
-	public static $rules = array( /*
-		'Id' => 'required',
-		'Address1Type' => 'required',
-		'Address2Street1' => 'required',
-		'Address2Street2' => 'required',
-		'Address2Type' => 'required',
-		'Address3Street1' => 'required',
-		'Address3Street2' => 'required',
-		'Address3Type' => 'required',
-		'Anniversary' => 'required',
-		'AssistantName' => 'required',
-		'AssistantPhone' => 'required',
-		'BillingInformation' => 'required',
-		'Birthday' => 'required',
-		'City' => 'required',
-		'City2' => 'required',
-		'City3' => 'required',
-		'Company' => 'required',
-		'AccountId' => 'required',
-		'CompanyID' => 'required',
-		'ContactNotes' => 'required',
-		'ContactType' => 'required',
-		'Country' => 'required',
-		'Country2' => 'required',
-		'Country3' => 'required',
-		'CreatedBy' => 'required',
-		'DateCreated' => 'required',
-		'Email' => 'required',
-		'EmailAddress2' => 'required',
-		'EmailAddress3' => 'required',
-		'Fax1' => 'required',
-		'Fax1Type' => 'required',
-		'Fax2' => 'required',
-		'Fax2Type' => 'required',
-		'FirstName' => 'required',
-		'Groups' => 'required',
-		'JobTitle' => 'required',
-		'LastName' => 'required',
-		'LastUpdated' => 'required',
-		'LastUpdatedBy' => 'required',
-		'Leadsource' => 'required',
-		'LeadSourceId' => 'required',
-		'MiddleName' => 'required',
-		'Nickname' => 'required',
-		'OwnerID' => 'required',
-		'Password' => 'required',
-		'Phone1' => 'required',
-		'Phone1Ext' => 'required',
-		'Phone1Type' => 'required',
-		'Phone2' => 'required',
-		'Phone2Ext' => 'required',
-		'Phone2Type' => 'required',
-		'Phone3' => 'required',
-		'Phone3Ext' => 'required',
-		'Phone3Type' => 'required',
-		'Phone4' => 'required',
-		'Phone4Ext' => 'required',
-		'Phone4Type' => 'required',
-		'Phone5' => 'required',
-		'Phone5Ext' => 'required',
-		'Phone5Type' => 'required',
-		'PostalCode' => 'required',
-		'PostalCode2' => 'required',
-		'PostalCode3' => 'required',
-		'ReferralCode' => 'required',
-		'SpouseName' => 'required',
-		'State' => 'required',
-		'State2' => 'required',
-		'State3' => 'required',
-		'StreetAddress1' => 'required',
-		'StreetAddress2' => 'required',
-		'Suffix' => 'required',
-		'Title' => 'required',
-		'Username' => 'required',
-		'Validated' => 'required',
-		'Website' => 'required',
-		'ZipFour1' => 'required',
-		'ZipFour2' => 'required',
-		'ZipFour3' => 'required',
-		'_Gender' => 'required',
-		'_IdentityCard0' => 'required',
-		'_Password0' => 'required',
-		'_LastLogin' => 'required',
-		'_Race' => 'required',
-		'_Religion' => 'required',
-		'_FacebookType' => 'required',
-		'_Facebook' => 'required',
-		'_SkypeID' => 'required',
-		'_YahooID' => 'required',
-		'_Bank0' => 'required',
-		'_AccountHolder' => 'required',
-		'_AccountNumber' => 'required',
-		'_MSNID' => 'required',
-		'_LinkedIn' => 'required',
-		'_Google' => 'required',
-		'_Twitter' => 'required',
-		'_TrackingNo' => 'required',
-		'_OrderID1' => 'required',
-		'_OrderID2' => 'required',
-		'_Company0' => 'required' */
-	);
+	protected static $unguarded = true;
+
+	protected $primaryKey = 'Id';
+
+	public $timestamps = false;
+
+	public static $rules = array();
+
+	public function getDates()
+	{
+		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
+
+		return Larafuse::where('Type','LIKE','Date%')->rememberForever()->lists('Field');
+	}
+
+	public function getDateField()
+	{
+		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
+
+		return Larafuse::whereType('Date')->rememberForever('DateField')->lists('Field');
+	}
+
+	public function getDateTimeField()
+	{
+		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
+		
+		return Larafuse::whereType('DateTime')->rememberForever('DateTimeField')->lists('Field');
+	}	
+
+	/**
+	 * Set a given attribute on the model.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return void
+	 */
+	public function setAttribute($key, $value)
+	{
+		// First we will check for the presence of a mutator for the set operation
+		// which simply lets the developers tweak the attribute as it is set on
+		// the model, such as "json_encoding" an listing of data for storage.
+		if ($this->hasSetMutator($key))
+		{
+			$method = 'set'.studly_case($key).'Attribute';
+
+			return $this->{$method}($value);
+		}
+
+		// If an attribute is listed as a "date", we'll convert it from a DateTime
+		// instance into a form proper for storage on the database tables using
+		// the connection grammar's date format. We will auto set the values.
+		elseif(in_array($key, $this->getDateField()))
+		{
+			$value = (new Carbon($value))->toDateString();
+		}
+		elseif(in_array($key, $this->getDateTimeField()))
+		{
+			$value = (new Carbon($value))->toDateTimeString();
+		}
+
+		$this->attributes[$key] = $value;
+	}
 }

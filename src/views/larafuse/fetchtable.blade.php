@@ -1,7 +1,7 @@
 <?php 
 if($table === 'Contact' || $table === 'Job')
-	$masa = 25;
-else $masa = 15;
+	$masa = 12;
+else $masa = 3;
 ?>
 
 <html>
@@ -12,7 +12,7 @@ else $masa = 15;
 <?php }
 
 	if($nextTable != null && $nextTable != 'done') { ?>
-		<meta http-equiv="refresh" content="{{ '10' }}; url=/larafuse/fetchtable/{{ $nextTable }}/0/{{ $continue }}" />
+		<meta http-equiv="refresh" content="{{ '5' }}; url=/larafuse/fetchtable/{{ $nextTable }}/0/{{ $continue }}" />
 <?php } ?>
 </head>
 <body>
