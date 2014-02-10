@@ -12,13 +12,6 @@ class Contact extends ConfideUser {
 
 	public $timestamps = false;
 
-	public static $rules = array();
-
-	public function getPasswordAttribute()
-	{
-	  return $this->_Password0;
-	}
-
 	public function getDates()
 	{
 		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
