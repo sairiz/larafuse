@@ -1,6 +1,7 @@
 <?php namespace Saiffil\Larafuse\Tables;
 
 use Zizaco\Confide\ConfideUser;
+use Larafuse;
 
 class Contact extends ConfideUser {
 
