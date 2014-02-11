@@ -220,9 +220,7 @@ class Sync extends BaseData {
         if(!isset($limit))
             $limit = 1000;
 
-        $qryDate = Carbon::now(new DateTimeZone('EST'));
-
-        Carbon::setToStringFormat('Y-m-d H:');
+        $qryDate = Carbon::now(new DateTimeZone('US/Eastern'));
 
         $query = ['Id' => '%'];
 
@@ -232,27 +230,19 @@ class Sync extends BaseData {
 
         if (in_array($table,['StageMove','JobRecurringInstance']))
         {
-            // Retrieve 1 hour interval for 58 min frequency
-            try {
-                $marker = $inst::latest('DateCreated')->first()->DateCreated->format('Ymd\TH:i:s');
-            } catch (Exception $e) {}
-            $query = ['DateCreated' => $qryDate->subMinutes(Config::get('larafuse::freqStage')+2).'%'];
+            $marker = $inst::latest('DateCreated')->first()->DateCreated->format('Ymd\TH:i:s');
+            $query = ['DateCreated' => $qryDate->subMinutes(Config::get('larafuse::freqStage')+2)->format('Y-m-d H:').'%'];
             $retData = Fuse::dsQueryOrderBy($table,$limit,0,$query,$retFields,$sortBy,false);
         }
         elseif (in_array($table,['Contact','ContactAction']))
         {
-            // Retrieve 10 min interval for 8 min frequency
-            try {
-                $marker = $inst::latest('LastUpdated')->first()->LastUpdated->format('Ymd\TH:i:s');
-            } catch (Exception $e) {}
-            $query = ['LastUpdated' => $qryDate->subMinutes(Config::get('larafuse::freqContact')+2).'%'];
+            $marker = $inst::latest('LastUpdated')->first()->LastUpdated->format('Ymd\TH:i:s');
+            $query = ['LastUpdated' => $qryDate->subMinutes(Config::get('larafuse::freqContact')+2)->format('Y-m-d H:').'%'];
             $retData = Fuse::dsQueryOrderBy($table,$limit,0,$query,$retFields,$sortBy,false);
         }
         elseif (in_array($table,['Invoice','InvoiceItem','InvoicePayment','Payment','Job','OrderItem']))
         {
-            try {
-                $marker = $inst::latest('LastUpdated')->first()->LastUpdated->format('Ymd\TH:i:s');
-            } catch (Exception $e){}
+            $marker = $inst::latest('LastUpdated')->first()->LastUpdated->format('Ymd\TH:i:s');
             $retData = Fuse::dsQueryOrderBy($table,$limit,0,$query,$retFields,$sortBy,false);
         }
         else $retData = Fuse::dsQueryOrderBy($table,$limit,0,$query,$retFields,$sortBy,false);
