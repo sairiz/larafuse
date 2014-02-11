@@ -90,49 +90,15 @@ abstract class BaseTable extends Eloquent {
 		// If the attribute is listed as a date, we will convert it to a DateTime
 		// instance on retrieval, which makes it quite convenient to work with
 		// date fields without having to create a mutator for each property.
-		elseif (in_array($key, $this->getDates()))
+		elseif(in_array($key, $this->getDateField()))
 		{
-			if ($value) return $this->asDateTime($value);
+			if ($value) return (new Carbon($value))->toDateString();
 		}
+		elseif(in_array($key, $this->getDateTimeField()))
+		{
+			if ($value) return (new Carbon($value))->toDateTimeString();
+		}		
 
 		return $value;
-	}	
-
-	/**
-	 * Return a timestamp as DateTime object.
-	 *
-	 * @param  mixed  $value
-	 * @return \Carbon\Carbon
-	 */
-	protected function asDateTime($value)
-	{
-		// If this value is an integer, we will assume it is a UNIX timestamp's value
-		// and format a Carbon object from this timestamp. This allows flexibility
-		// when defining your date fields as they might be UNIX timestamps here.
-		if (is_numeric($value))
-		{
-			return Carbon::createFromTimestamp($value);
-		}
-
-		// If the value is in simply year, month, day format, we will instantiate the
-		// Carbon instances from that format. Again, this provides for simple date
-		// fields on the database, while still supporting Carbonized conversion.
-		elseif (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value))
-		{
-			return Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
-		}
-
-		// Finally, we will just assume this date is in the format used by default on
-		// the database connection and use that format to create the Carbon object
-		// that is returned back out to the developers after we convert it here.
-		elseif ( ! $value instanceof DateTime)
-		{
-			$format = $this->getDateFormat();
-
-			return Carbon::createFromFormat($format, $value);
-		}
-
-		return Carbon::instance($value);
 	}
-
 }
