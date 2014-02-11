@@ -16,22 +16,16 @@ abstract class BaseTable extends Eloquent {
 
 	public function getDates()
 	{
-		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
-
 		return Larafuse::where('Type','LIKE','Date%')->rememberForever()->lists('Field');
 	}
 
 	public function getDateField()
 	{
-		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
-
 		return Larafuse::whereType('Date')->rememberForever('DateField')->lists('Field');
 	}
 
 	public function getDateTimeField()
 	{
-		//$table = join('', array_slice(explode('\\', get_class($this)), -1));
-		
 		return Larafuse::whereType('DateTime')->rememberForever('DateTimeField')->lists('Field');
 	}	
 
@@ -92,11 +86,19 @@ abstract class BaseTable extends Eloquent {
 		// date fields without having to create a mutator for each property.
 		elseif(in_array($key, $this->getDateField()))
 		{
-			if ($value) return (new Carbon($value))->toDateString();
+			if ($value)
+			{
+				Carbon::setToStringFormat('Y-m-d');
+				return (new Carbon($value,'US/Eastern'));
+			}
 		}
 		elseif(in_array($key, $this->getDateTimeField()))
 		{
-			if ($value) return (new Carbon($value))->toDateTimeString();
+			if ($value)
+			{
+				Carbon::setToStringFormat('Y-m-d H:i:s');
+				return (new Carbon($value,'US/Eastern'));
+			}
 		}		
 
 		return $value;

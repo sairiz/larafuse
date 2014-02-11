@@ -9,6 +9,7 @@ use Larafuse;
 use Schema;
 use Illuminate\Database\Schema\Blueprint;
 use DB;
+use Saiffil\Larafuse\Helpers\Log;
 
 class Sync extends BaseData {
 
@@ -268,8 +269,23 @@ class Sync extends BaseData {
                 {
                     $newInst = $inst::find($isi['Id']);
                     if(isset($newInst))
-                        $newInst->update($isi);
-                    else $inst::create($isi);
+                    { 
+                        try 
+                        {
+                            $newInst->update($isi);   
+                        } catch (Exception $e) {
+                            Log::syncException($table,$isi,$e->getMessage());
+                        }
+                    }
+                    else 
+                    {
+                        try 
+                        {
+                            $inst::create($isi);   
+                        } catch (Exception $e) {
+                            Log::syncException($table,$isi,$e->getMessage());
+                        }
+                    }
                 }
             }
             elseif (in_array($table,['Contact','ContactAction','Invoice','InvoiceItem','InvoicePayment','Payment','Job','OrderItem']))
@@ -278,8 +294,23 @@ class Sync extends BaseData {
                 {
                     $newInst = $inst::find($isi['Id']);
                     if(isset($newInst))
-                        $newInst->update($isi);
-                    else $inst::create($isi);
+                    { 
+                        try 
+                        {
+                            $newInst->update($isi);   
+                        } catch (Exception $e) {
+                            Log::syncException($table,$isi,$e->getMessage());
+                        }
+                    }
+                    else 
+                    {
+                        try 
+                        {
+                            $inst::create($isi);   
+                        } catch (Exception $e) {
+                            Log::syncException($table,$isi,$e->getMessage());
+                        }
+                    }
                 }
             }
             elseif ($table === 'DataFormField')
@@ -291,6 +322,7 @@ class Sync extends BaseData {
                     {
                         $newInst->update($isi);   
                     } catch (Exception $e) {
+                        Log::syncException($table,$isi,$e->getMessage());
                         $isi['Values'] = json_encode($isi['Values'], JSON_FORCE_OBJECT);
                         $newInst->update($isi);
                     }
@@ -301,6 +333,7 @@ class Sync extends BaseData {
                     {
                         $newInst::create($isi);   
                     } catch (Exception $e) {
+                        Log::syncException($table,$isi,$e->getMessage());
                         $isi['Values'] = json_encode($isi['Values'], JSON_FORCE_OBJECT);
                         $newInst::create($isi);
                     }
@@ -310,8 +343,23 @@ class Sync extends BaseData {
             {
                 $newInst = $inst::find($isi['Id']);
                 if(isset($newInst))
-                    $newInst->update($isi);
-                else $inst::create($isi);
+                { 
+                    try 
+                    {
+                        $newInst->update($isi);   
+                    } catch (Exception $e) {
+                        Log::syncException($table,$isi,$e->getMessage());
+                    }
+                }
+                else 
+                {
+                    try 
+                    {
+                        $inst::create($isi);   
+                    } catch (Exception $e) {
+                        Log::syncException($table,$isi,$e->getMessage());
+                    }
+                }
             }
         }
 
@@ -357,8 +405,23 @@ class Sync extends BaseData {
         $newInst = $inst::find($Id);
 
         if(isset($newInst))
-            $newInst->update($retData);
-        else $inst::create($retData);
+        { 
+            try 
+            {
+                $newInst->update($retData);   
+            } catch (Exception $e) {
+                Log::syncException($table,$retData,$e->getMessage());
+            }
+        }
+        else 
+        {
+            try 
+            {
+                $inst::create($retData);   
+            } catch (Exception $e) {
+                Log::syncException($table,$retData,$e->getMessage());
+            }
+        }
 
         return $retData;
     }

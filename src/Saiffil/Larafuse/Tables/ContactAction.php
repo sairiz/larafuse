@@ -28,12 +28,13 @@ class ContactAction extends BaseTable {
 
 	public function setEndDateAttribute($value)
 	{
-	        $this->attributes['EndDate'] = (new Carbon($value))->toDateTimeString();
+	    $this->attributes['EndDate'] = (new Carbon($value))->toDateTimeString();
 	}
 
 	public function getEndDateAttribute($value)
 	{
-	        return $value->toDateTimeString();
+		Carbon::setToStringFormat('Y-m-d H:i:s');
+		return (new Carbon($value,'US/Eastern'));
 	}
 	
 }

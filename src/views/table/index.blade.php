@@ -33,7 +33,7 @@
 		</tbody>
 	</table>
 @else
-	There are no contacts
+	There are no {{ ucfirst($table) }}
 @endif
 
 @stop
