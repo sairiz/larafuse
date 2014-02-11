@@ -1,10 +1,10 @@
 <?php namespace Saiffil\Larafuse\Tables;
 
-use Eloquent;
+use LaravelBook\Ardent\Ardent;
 use Carbon\Carbon;
 use Larafuse;
 
-abstract class BaseTable extends Eloquent {
+abstract class BaseTable extends Ardent {
 
 	protected static $unguarded = true;
 

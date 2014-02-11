@@ -5,16 +5,6 @@ use Carbon\Carbon;
 class LeadSourceRecurringExpense extends BaseTable {
 
 	protected $table = 'LeadSourceRecurringExpense';
-	public static $rules = array(
-		'Id' => 'required',
-		'LeadSourceId' => 'required',
-		'Title' => 'required',
-		'Notes' => 'required',
-		'Amount' => 'required',
-		'StartDate' => 'required',
-		'EndDate' => 'required',
-		'NextExpenseDate' => 'required'
-	);
 
 	public function setStartDateAttribute($value)
 	{
