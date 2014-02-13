@@ -13,7 +13,8 @@
         "illuminate/support": "4.1.*",
         "saiffil/infusionsoft": "1.*",
         "liebig/cron": "dev-master",
-        "laravelbook/ardent": "dev-master"
+        "laravelbook/ardent": "dev-master",
+        "doxxon/laravel-mandrill-request": "dev-master"
     },
     "autoload": {
         "classmap": [
