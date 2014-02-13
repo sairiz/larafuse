@@ -24,7 +24,7 @@ class LarafuseServiceProvider extends ServiceProvider {
 	{
 		$this->package('saiffil/larafuse');
 
-		include __DIR__.'/../../routes.php';
+		include __DIR__.'/routes.php';
 	}
 
 	/**
@@ -65,7 +65,7 @@ class LarafuseServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array();
+		return ['fetch','sync','larafuse'];
 	}
 
 }

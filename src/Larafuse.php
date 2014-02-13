@@ -6,7 +6,7 @@ class Larafuse extends Eloquent
 {
     protected $table = 'Larafuse';
 
-    protected $guarded = array();
+    protected static $unguarded = true;
 
     protected $primaryKey = 'Id';
 
