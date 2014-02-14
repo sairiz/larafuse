@@ -1,6 +1,6 @@
 <?php
 
-//use Saiffil\Larafuse\Data\Fetch;
+//use Sairiz\Larafuse\Data\Fetch;
 
 class SyncTest extends TestCase {
 

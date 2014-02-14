@@ -3,7 +3,7 @@
 @section('main')
 
 <h1>Edit {{ $table }}</h1>
-{{ Form::model($inst, array('method' => 'PATCH', 'action' => array('Saiffil\Larafuse\Controllers\TablesController@update',$table,$Id))) }}
+{{ Form::model($inst, array('method' => 'PATCH', 'action' => array('Sairiz\Larafuse\Controllers\TablesController@update',$table,$Id))) }}
 	<ul>
         <li>
             {{ Form::label('Id', 'Id:') }}
@@ -502,7 +502,7 @@
 
 		<li>
 			{{ Form::submit('Update', array('class' => 'btn btn-info')) }}
-			{{ link_to_action('Saiffil\Larafuse\Controllers\TablesController@show', 'Cancel', [$table,$Id], array('class' => 'btn')) }}
+			{{ link_to_action('Sairiz\Larafuse\Controllers\TablesController@show', 'Cancel', [$table,$Id], array('class' => 'btn')) }}
 		</li>
 	</ul>
 {{ Form::close() }}

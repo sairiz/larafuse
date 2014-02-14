@@ -1,4 +1,4 @@
-<?php namespace Saiffil\Larafuse;
+<?php namespace Sairiz\Larafuse;
 
 use Eloquent;
 

@@ -1,4 +1,4 @@
-<?php namespace Saiffil\Larafuse\Data;
+<?php namespace Sairiz\Larafuse\Data;
 
 use DateTimeZone;
 use Carbon\Carbon;
@@ -9,7 +9,7 @@ use Larafuse;
 use Schema;
 use Illuminate\Database\Schema\Blueprint;
 use DB;
-use Saiffil\Larafuse\Helpers\Log;
+use Sairiz\Larafuse\Helpers\Log;
 
 class Sync extends BaseData {
 

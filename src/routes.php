@@ -1,8 +1,8 @@
 <?php
 
-use Saiffil\Larafuse\Helpers\Generate;
+use Sairiz\Larafuse\Helpers\Generate;
 
-Route::resource('contacts', 'Saiffil\Larafuse\Controllers\ContactsController');
+Route::resource('contacts', 'Sairiz\Larafuse\Controllers\ContactsController');
 
 Route::get('/cronJobs', function () {
     Cron::add('Sync', Config::get('larafuse::syncTime'), function()
@@ -67,26 +67,26 @@ Route::group(array('prefix' => 'larafuse'), function()
 		return Fetch::getRowCount();
 	});
 
-	Route::get('fetch/{table?}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetch');
+	Route::get('fetch/{table?}', 'Sairiz\Larafuse\Controllers\LarafuseController@fetch');
 
-	Route::get('fetchid/{table}/{Id}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetchId');
+	Route::get('fetchid/{table}/{Id}', 'Sairiz\Larafuse\Controllers\LarafuseController@fetchId');
 
-	Route::get('fetchtable/{table}/{page?}/{continue?}', 'Saiffil\Larafuse\Controllers\LarafuseController@fetchTable');
+	Route::get('fetchtable/{table}/{page?}/{continue?}', 'Sairiz\Larafuse\Controllers\LarafuseController@fetchTable');
 
-	Route::get('syncmissing/{table?}', 'Saiffil\Larafuse\Controllers\LarafuseController@syncMissing');
+	Route::get('syncmissing/{table?}', 'Sairiz\Larafuse\Controllers\LarafuseController@syncMissing');
 
 	Route::get('syncfield/{table?}', function($table = null)
 	{
 		return Sync::syncField($table);
 	});
 
-	Route::get('syncordergroup', 'Saiffil\Larafuse\Controllers\LarafuseController@syncOrderGroup');
+	Route::get('syncordergroup', 'Sairiz\Larafuse\Controllers\LarafuseController@syncOrderGroup');
 
-    Route::get('syncmain', 'Saiffil\Larafuse\Controllers\LarafuseController@syncMain');
+    Route::get('syncmain', 'Sairiz\Larafuse\Controllers\LarafuseController@syncMain');
 
-    Route::get('sync/{table?}/{limit?}', 'Saiffil\Larafuse\Controllers\LarafuseController@sync');
+    Route::get('sync/{table?}/{limit?}', 'Sairiz\Larafuse\Controllers\LarafuseController@sync');
 
-	Route::get('syncid/{table}/{Id}', 'Saiffil\Larafuse\Controllers\LarafuseController@syncId');
+	Route::get('syncid/{table}/{Id}', 'Sairiz\Larafuse\Controllers\LarafuseController@syncId');
 
 	Route::get('path', function()
 	{
@@ -96,21 +96,21 @@ Route::group(array('prefix' => 'larafuse'), function()
 		echo 'storage_path() : ' . storage_path() . '<br />';
 	});
 
-	Route::get('{table}', 'Saiffil\Larafuse\Controllers\TablesController@index');
+	Route::get('{table}', 'Sairiz\Larafuse\Controllers\TablesController@index');
 
-	Route::get('{table}/create', 'Saiffil\Larafuse\Controllers\TablesController@create');
+	Route::get('{table}/create', 'Sairiz\Larafuse\Controllers\TablesController@create');
 
-	Route::post('{table}', 'Saiffil\Larafuse\Controllers\TablesController@store');
+	Route::post('{table}', 'Sairiz\Larafuse\Controllers\TablesController@store');
 
-	Route::get('{table}/{Id}', 'Saiffil\Larafuse\Controllers\TablesController@show');
+	Route::get('{table}/{Id}', 'Sairiz\Larafuse\Controllers\TablesController@show');
 
-	Route::get('{table}/{Id}/edit', 'Saiffil\Larafuse\Controllers\TablesController@edit');
+	Route::get('{table}/{Id}/edit', 'Sairiz\Larafuse\Controllers\TablesController@edit');
 
-	Route::put('{table}/{Id}', 'Saiffil\Larafuse\Controllers\TablesController@update');
+	Route::put('{table}/{Id}', 'Sairiz\Larafuse\Controllers\TablesController@update');
 
-	Route::patch('{table}/{Id}', 'Saiffil\Larafuse\Controllers\TablesController@update');
+	Route::patch('{table}/{Id}', 'Sairiz\Larafuse\Controllers\TablesController@update');
 
-	Route::delete('{table}/{Id}', 'Saiffil\Larafuse\Controllers\TablesController@destroy');
+	Route::delete('{table}/{Id}', 'Sairiz\Larafuse\Controllers\TablesController@destroy');
 });
 
 Route::group(array('prefix' => 'generate'), function()

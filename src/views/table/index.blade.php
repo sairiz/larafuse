@@ -4,7 +4,7 @@
 
 <h1>All {{ ucfirst($table) }}</h1>
 
-<p>{{ link_to_action('Saiffil\Larafuse\Controllers\TablesController@create', 'Add a new '.lcfirst($table), [$table]) }}</p>
+<p>{{ link_to_action('Sairiz\Larafuse\Controllers\TablesController@create', 'Add a new '.lcfirst($table), [$table]) }}</p>
 
 @if ($inst->count())
 	<table class="table table-striped table-bordered">
@@ -22,9 +22,9 @@
 					@foreach ($larafuse as $fuse)
 						<td>{{{ $i->$fuse }}}</td>
 					@endforeach
-                    <td>{{ link_to_action('Saiffil\Larafuse\Controllers\TablesController@edit', 'Edit', [$table,$i->Id], ['class' => 'btn btn-info']) }}</td>
+                    <td>{{ link_to_action('Sairiz\Larafuse\Controllers\TablesController@edit', 'Edit', [$table,$i->Id], ['class' => 'btn btn-info']) }}</td>
                     <td>
-                        {{ Form::open(array('method' => 'DELETE', 'action' => array('Saiffil\Larafuse\Controllers\TablesController@destroy',$table,$i->Id))) }}
+                        {{ Form::open(array('method' => 'DELETE', 'action' => array('Sairiz\Larafuse\Controllers\TablesController@destroy',$table,$i->Id))) }}
                             {{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
                         {{ Form::close() }}
                     </td>

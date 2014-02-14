@@ -1,4 +1,4 @@
-<?php namespace Saiffil\Larafuse\Facades;
+<?php namespace Sairiz\Larafuse\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

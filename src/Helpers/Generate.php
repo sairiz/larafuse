@@ -1,4 +1,4 @@
-<?php namespace Saiffil\Larafuse\Helpers;
+<?php namespace Sairiz\Larafuse\Helpers;
 
 use Larafuse;
 use Fetch;

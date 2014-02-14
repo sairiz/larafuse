@@ -1,10 +1,10 @@
-<?php namespace Saiffil\Larafuse;
+<?php namespace Sairiz\Larafuse;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
-use Saiffil\Larafuse\Data\Fetch;
-use Saiffil\Larafuse\Data\Sync;
-use Saiffil\Larafuse\Larafuse;
+use Sairiz\Larafuse\Data\Fetch;
+use Sairiz\Larafuse\Data\Sync;
+use Sairiz\Larafuse\Larafuse;
 
 class LarafuseServiceProvider extends ServiceProvider {
 
@@ -22,7 +22,7 @@ class LarafuseServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('saiffil/larafuse');
+		$this->package('sairiz/larafuse', null, __DIR__);
 
 		include __DIR__.'/routes.php';
 	}
@@ -52,9 +52,9 @@ class LarafuseServiceProvider extends ServiceProvider {
 		$this->app->booting(function()
 		{
 			$loader = AliasLoader::getInstance();
-			$loader->alias('Fetch','Saiffil\Larafuse\Facades\Fetch');
-			$loader->alias('Sync','Saiffil\Larafuse\Facades\Sync');
-			$loader->alias('Larafuse','Saiffil\Larafuse\Facades\Larafuse');
+			$loader->alias('Fetch','Sairiz\Larafuse\Facades\Fetch');
+			$loader->alias('Sync','Sairiz\Larafuse\Facades\Sync');
+			$loader->alias('Larafuse','Sairiz\Larafuse\Facades\Larafuse');
 		});
 	}
 

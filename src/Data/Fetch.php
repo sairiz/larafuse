@@ -1,11 +1,11 @@
-<?php namespace Saiffil\Larafuse\Data;
+<?php namespace Sairiz\Larafuse\Data;
 
 use Config;
 use Symfony\Component\DomCrawler\Crawler;
 use Fuse;
 use Exception;
 use Cache;
-use Saiffil\Larafuse\Helpers\Log;
+use Sairiz\Larafuse\Helpers\Log;
 use DB;
 
 class Fetch extends BaseData {

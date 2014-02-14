@@ -1,6 +1,6 @@
-<?php namespace Saiffil\Larafuse\Controllers;
+<?php namespace Sairiz\Larafuse\Controllers;
 
-use Saiffil\Larafuse\Larafuse;
+use Sairiz\Larafuse\Larafuse;
 use View;
 use Redirect;
 use Input;
@@ -28,7 +28,7 @@ class TablesController extends BaseController {
      */
     protected function createInstance($table)
     {
-        $inst = '\Saiffil\Larafuse\Tables\\'.ucfirst($table);
+        $inst = '\Sairiz\Larafuse\Tables\\'.ucfirst($table);
 
         return new $inst;
     }
@@ -137,7 +137,7 @@ class TablesController extends BaseController {
 			$inst = $tableObject->find($Id);
 			$inst->update($input);
 
-			return Redirect::action('Saiffil\Larafuse\Controllers\TablesController@show',[$table,$Id]);
+			return Redirect::action('Sairiz\Larafuse\Controllers\TablesController@show',[$table,$Id]);
 		}
 
 		return Redirect::route('contacts.edit', $Id)
@@ -158,7 +158,7 @@ class TablesController extends BaseController {
 
 		$tableObject->find($Id)->delete();
 
-		return Redirect::action('Saiffil\Larafuse\Controllers\TablesController@index',$table);
+		return Redirect::action('Sairiz\Larafuse\Controllers\TablesController@index',$table);
 	}
 
 }

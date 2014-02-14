@@ -1,6 +1,6 @@
-<?php namespace Saiffil\Larafuse\Controllers;
+<?php namespace Sairiz\Larafuse\Controllers;
 
-use Saiffil\Larafuse\Tables\Contact;
+use Sairiz\Larafuse\Tables\Contact;
 use View;
 use Redirect;
 use Input;

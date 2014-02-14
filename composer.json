@@ -1,18 +1,18 @@
 {
-    "name": "saiffil/larafuse",
-    "description": "Infusionsoft Database Manager for Laravel 4",
+    "name": "sairiz/larafuse",
+    "description": "Infusionsoft Database Syncronizer for Laravel 4",
     "keywords": ["laravel", "infusionsoft"],
     "authors": [
         {
-            "name": "Saiffil Fariz Mohamad Yusuff",
+            "name": "Saiffil Fariz",
             "email": "saiffil@mtouch.my"
         }
     ],
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.1.*",
-        "saiffil/infusionsoft": "1.*",
-        "saiffil/mandrill": "1.*",
+        "sairiz/infusionsoft": "1.*",
+        "sairiz/mandrill": "1.*",
         "liebig/cron": "0.9.*",
         "laravelbook/ardent": "2.4.*"
     },
@@ -22,7 +22,7 @@
             "tests/TestCase.php"
         ],
         "psr-4": {
-            "Saiffil\\Larafuse\\": "src/"
+            "Sairiz\\Larafuse\\": "src/"
         }
     },
     "minimum-stability": "stable",

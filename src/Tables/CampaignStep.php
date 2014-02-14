@@ -1,4 +1,4 @@
-<?php namespace Saiffil\Larafuse\Tables;
+<?php namespace Sairiz\Larafuse\Tables;
 
 class CampaignStep extends BaseTable {
 

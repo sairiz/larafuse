@@ -1,4 +1,4 @@
-<?php namespace Saiffil\Larafuse\Data;
+<?php namespace Sairiz\Larafuse\Data;
 
 use Larafuse;
 use Fuse;
@@ -134,7 +134,7 @@ abstract class BaseData {
      */
     protected function createInstance($table)
     {
-        $inst = '\Saiffil\Larafuse\Tables\\'.$table;
+        $inst = '\Sairiz\Larafuse\Tables\\'.$table;
 
         return new $inst;
     }

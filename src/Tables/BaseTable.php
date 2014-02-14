@@ -1,4 +1,4 @@
-<?php namespace Saiffil\Larafuse\Tables;
+<?php namespace Sairiz\Larafuse\Tables;
 
 use LaravelBook\Ardent\Ardent;
 use Carbon\Carbon;
