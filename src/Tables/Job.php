@@ -4,14 +4,16 @@ class Job extends BaseTable {
 
 	protected $table = 'Job';
 
-	public function Contact()
-    {
-        return $this->belongsTo('Contact', 'ContactId', 'Id');
-    }
+	public static $relationsData = [
+	    'orderItems'  => ['hasMany', 'Sairiz\Larafuse\Tables\OrderItem', 'foreignKey' => 'OrderId'],
+	    'invoices'  => ['hasMany', 'Sairiz\Larafuse\Tables\Invoice', 'foreignKey' => 'JobId'],
+	    'recurringOrders'  => ['hasMany', 'Sairiz\Larafuse\Tables\RecurringOrder', 'foreignKey' => 'OriginatingOrderId'],
+	    'contact'  => ['belongsTo', 'Sairiz\Larafuse\Tables\Contact', 'foreignKey' => 'ContactId'], 
+	    'products'  => ['belongsTo', 'Sairiz\Larafuse\Tables\Product', 'foreignKey' => 'ProductId'], 	    	    	    
+	];	
 
-
-	public function Product()
+	public function payPlans()
     {
-        return $this->belongsTo('Product', 'ProductId', 'Id');
+        return $this->hasManyThrough('Sairiz\Larafuse\Tables\PayPlan', 'Sairiz\Larafuse\Tables\Invoice','JobId','InvoiceId');
     }
 }
