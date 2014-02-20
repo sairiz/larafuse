@@ -89,7 +89,7 @@ abstract class BaseTable extends Ardent {
 			if ($value)
 			{
 				Carbon::setToStringFormat('d-m-Y');
-				return (new Carbon($value,'US/Eastern'));
+				return (new Carbon($value,'US/Eastern'))->setTimezone('Asia/Kuala_Lumpur');
 			}
 		}
 		elseif(in_array($key, $this->getDateTimeField()))
@@ -97,7 +97,7 @@ abstract class BaseTable extends Ardent {
 			if ($value)
 			{
 				Carbon::setToStringFormat('d-m-Y H:i:s');
-				return (new Carbon($value,'US/Eastern'));
+				return (new Carbon($value,'US/Eastern'))->setTimezone('Asia/Kuala_Lumpur');
 			}
 		}		
 
