@@ -4,3 +4,4 @@ class Template extends BaseTable {
 
 	protected $table = 'Template';
 
+}
