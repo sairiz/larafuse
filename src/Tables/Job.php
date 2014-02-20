@@ -5,7 +5,7 @@ class Job extends BaseTable {
 	protected $table = 'Job';
 
 	public static $relationsData = [
-	    'orderItems'  => ['hasMany', 'Sairiz\Larafuse\Tables\OrderItem', 'foreignKey' => 'OrderId'],
+	    'items'  => ['hasMany', 'Sairiz\Larafuse\Tables\OrderItem', 'foreignKey' => 'OrderId'],
 	    'invoices'  => ['hasMany', 'Sairiz\Larafuse\Tables\Invoice', 'foreignKey' => 'JobId'],
 	    'recurringOrders'  => ['hasMany', 'Sairiz\Larafuse\Tables\RecurringOrder', 'foreignKey' => 'OriginatingOrderId'],
 	    'contact'  => ['belongsTo', 'Sairiz\Larafuse\Tables\Contact', 'foreignKey' => 'ContactId'], 
