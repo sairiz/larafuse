@@ -230,19 +230,19 @@ class Sync extends BaseData {
 
         if (in_array($table,['StageMove','JobRecurringInstance']))
         {
-            $marker = $inst::latest('DateCreated')->first()->DateCreated->format('Ymd\TH:i:s');
+            $marker = $inst::latest('DateCreated')->first()->DateCreated->setTimezone('US/Eastern')->format('Ymd\TH:i:s');
             $query = ['DateCreated' => $qryDate->subMinutes(Config::get('larafuse::freqStage')+2)->format('Y-m-d H:').'%'];
             $retData = Fuse::dsQueryOrderBy($table,$limit,0,$query,$retFields,$sortBy,false);
         }
         elseif (in_array($table,['Contact','ContactAction']))
         {
-            $marker = $inst::latest('LastUpdated')->first()->LastUpdated->format('Ymd\TH:i:s');
+            $marker = $inst::latest('LastUpdated')->first()->LastUpdated->setTimezone('US/Eastern')->format('Ymd\TH:i:s');
             $query = ['LastUpdated' => $qryDate->subMinutes(Config::get('larafuse::freqContact')+2)->format('Y-m-d H:').'%'];
             $retData = Fuse::dsQueryOrderBy($table,$limit,0,$query,$retFields,$sortBy,false);
         }
         elseif (in_array($table,['Invoice','InvoiceItem','InvoicePayment','Payment','Job','OrderItem']))
         {
-            $marker = $inst::latest('LastUpdated')->first()->LastUpdated->format('Ymd\TH:i:s');
+            $marker = $inst::latest('LastUpdated')->first()->LastUpdated->setTimezone('US/Eastern')->format('Ymd\TH:i:s');
             $retData = Fuse::dsQueryOrderBy($table,$limit,0,$query,$retFields,$sortBy,false);
         }
         else $retData = Fuse::dsQueryOrderBy($table,$limit,0,$query,$retFields,$sortBy,false);
