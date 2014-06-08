@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.1.*",
+        "illuminate/support": "4.2.*",
         "sairiz/infusionsoft": "1.*",
         "sairiz/mandrill": "1.*",
         "liebig/cron": "0.9.*",
