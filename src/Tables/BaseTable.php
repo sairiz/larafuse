@@ -16,7 +16,8 @@ abstract class BaseTable extends Ardent {
 
 	public function getDates()
 	{
-		return Larafuse::where('Type','LIKE','Date%')->rememberForever()->lists('Field');
+		return [];
+		//return Larafuse::where('Type','LIKE','Date%')->rememberForever()->lists('Field');
 	}
 
 	public function getDateField()
